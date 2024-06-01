@@ -1,4 +1,4 @@
-# Keycloak Configuration
+# Keycloak Sample Configuration
 
 This repository contains configuration files and scripts for setting up and managing Keycloak with various backends.
 
