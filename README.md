@@ -12,37 +12,61 @@ This repository contains configuration files and scripts for setting up and mana
 ### Prerequisites
 
 - Keycloak installed and running.
-- Access to a SQL Server database if using the `sqlserver` configuration.
+- A proxy server (e.g., NGINX, Apache) if using the proxy configuration.
+- Access to a SQL Server database if using the SQL Server configuration.
 
 ### Installation
 
-1. Clone this repository:
+1. Clone the repository:
     ```sh
-    git clone https://github.com/mmyassin/keycloak-configuration.git
-    cd keycloak-configuration
+    git clone https://github.com/mmyassin/keycloak-sample-configuration.git
+    cd keycloak-sample-configuration
     ```
 
 2. Follow the instructions in the respective directories for setting up the proxy or SQL Server configurations.
 
-## Usage
-
-### Proxy Setup
+## Proxy Setup
 
 1. Navigate to the `proxy` directory:
     ```sh
     cd proxy
     ```
 
-2. Follow the instructions in the `README.md` file within the `proxy` directory.
+2. Copy the proxy configuration file to your proxy server's configuration directory. For NGINX, this might be `/etc/nginx/sites-available/`:
+    ```sh
+    sudo cp keycloak-proxy.conf /etc/nginx/sites-available/keycloak-proxy.conf
+    ```
 
-### SQL Server Integration
+3. Create a symbolic link to the `sites-enabled` directory (for NGINX):
+    ```sh
+    sudo ln -s /etc/nginx/sites-available/keycloak-proxy.conf /etc/nginx/sites-enabled/
+    ```
+
+4. Test the proxy configuration to ensure there are no syntax errors:
+    ```sh
+    sudo nginx -t
+    ```
+
+5. Reload the proxy server to apply the new configuration:
+    ```sh
+    sudo systemctl reload nginx
+    ```
+
+## SQL Server Integration
 
 1. Navigate to the `sqlserver` directory:
     ```sh
     cd sqlserver
     ```
 
-2. Follow the instructions in the `README.md` file within the `sqlserver` directory.
+2. Modify the `realm-export.json` file with your specific settings.
+
+3. Run the provided SQL script to set up the necessary tables in your SQL Server database:
+    ```sh
+    sqlcmd -S <server_name> -U <username> -P <password> -i setup.sql
+    ```
+
+4. Update your Keycloak configuration to point to the SQL Server database.
 
 ## Contributing
 
