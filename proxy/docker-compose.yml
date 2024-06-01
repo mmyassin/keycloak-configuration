@@ -1,0 +1,18 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.4
+    ports:
+      - "8080:8080"
+    environment:
+      KEYCLOAK_ADMIN: ADMIN_USERNAME
+      KEYCLOAK_ADMIN_PASSWORD: ADMIN_PASSWORD
+      KC_HOSTNAME_URL: https://your_domain.com
+      KC_HOSTNAME_ADMIN_URL: https://your_domain.com
+    command: start-dev --proxy=edge --hostname-strict=true
+    volumes:
+      - ./themes/.:/opt/keycloak/themes/.
+      - ./providers/.:/opt/keycloak/providers/.
+networks:
+  keycloak-network:
+    driver: bridge
+      
